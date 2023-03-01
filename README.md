@@ -4,7 +4,7 @@ a quick application to store/display my games collections
 
 ### TODO: 
 - [X] configure project
-- [ ] fix grid height
+- [X] fix grid height
 - [ ] configure DB
 - [ ] configure routes
 
