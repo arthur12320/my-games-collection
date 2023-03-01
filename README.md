@@ -8,5 +8,16 @@ a quick application to store/display my games collections
 - [ ] configure DB
 - [ ] configure routes
 
+
+## game entry format
+
+```json
+{
+  title:String,
+  platform:Enum??,
+}
+```
+
 ### future ideas
 - [ ] add "light" mode
+- [ ] add indie games list
