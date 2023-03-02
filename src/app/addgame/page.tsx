@@ -87,12 +87,14 @@ export default function AddGame({ onCancel, onComplete }: TravelLogFormProps) {
     }
   };
   return (
-    <>
+    <div className="bg-slate-600 h-full">
       <div className="flex justify-end">
         <button
           onClick={() => {
             if (onCancel) {
               onCancel();
+            } else {
+              router.push('/');
             }
 
             reset();
@@ -143,7 +145,7 @@ export default function AddGame({ onCancel, onComplete }: TravelLogFormProps) {
                   {...register(property)}
                 >
                   {value.option?.map((option, i) => (
-                    <option key={i} value={option}>
+                    <option key={i} value={option as string}>
                       {option}
                     </option>
                   ))}
@@ -164,6 +166,6 @@ export default function AddGame({ onCancel, onComplete }: TravelLogFormProps) {
         })}
         <button className="btn btn-success">Create</button>
       </form>
-    </>
+    </div>
   );
 }

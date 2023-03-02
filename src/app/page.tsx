@@ -1,3 +1,4 @@
+
 import GameCard from './components/gameCard';
 import { GameEntries } from '../../models/GameEntry/GameEntries';
 import { GameEntryEntryWithId } from '../../models/GameEntry/GameEntry';
@@ -7,7 +8,6 @@ export default async function Home() {
     { $addFields: { _id: { $toString: '$_id' } } },
   ]).toArray();
 
-  console.log(games);
   return (
     <main className="bg-slate-300 h-max min-h-full">
       <div>
@@ -18,11 +18,7 @@ export default async function Home() {
           ))}
         </div>
         <p className="text-green-500 font-bold text-center ">testeee</p>
-        <div className="fixed bottom-8 right-10">
-          <button className="btn btn-primary btn-xs sm:btn-sm md:btn-md lg:btn-lg">
-            Add Game
-          </button>
-        </div>
+
       </div>
     </main>
   );
