@@ -5,8 +5,12 @@ a quick application to store/display my games collections
 ### TODO: 
 - [X] configure project
 - [X] fix grid height
-- [ ] configure DB
+- [X] configure DB
 - [ ] configure routes
+  - [ ] POST
+  - [ ] GET
+- [ ] make adding page
+- [ ] make searchbar
 
 
 ## game entry format
@@ -15,6 +19,8 @@ a quick application to store/display my games collections
 {
   title:String,
   platform:Enum??,
+  mainImage:String,
+  boughtDate:number
 }
 ```
 

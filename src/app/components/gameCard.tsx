@@ -1,5 +1,7 @@
+import { GameEntryEntryWithId } from '../../../models/GameEntry/GameEntry';
+
 export type GameCardProps = {
-  name: String;
+  game: GameEntryEntryWithId;
 };
 
 export default function GameCard(props: GameCardProps) {
@@ -8,15 +10,15 @@ export default function GameCard(props: GameCardProps) {
       <div className="flex justify-center items-center">
         <picture>
           <img
-            src="https://static.netshoes.com.br/produtos/call-of-duty-black-ops-xbox-360/60/DVM-0005-460/DVM-0005-460_zoom1.jpg?ts=1597073386&ims=544x"
-            alt="game"
+            src={props.game.mainImage}
+            alt={props.game.title}
             className="pt-4 w-96"
           />
         </picture>
       </div>
       <div className="card-body">
-        <h2 className="card-title">{props.name}</h2>
-        <div className="badge badge-accent">Xbox 360</div>
+        <h2 className="card-title">{props.game.title}</h2>
+        <div className="badge badge-accent">{props.game.platform}</div>
       </div>
     </div>
   );

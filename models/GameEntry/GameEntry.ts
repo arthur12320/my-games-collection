@@ -1,0 +1,68 @@
+/* eslint-disable @typescript-eslint/no-redeclare */
+import { z } from 'zod';
+import isValidDate from 'date-fns/isValid';
+
+const errors = {
+  title: 'Title cannot be empty.',
+  url: 'Image must be a valid URL.',
+  platform: 'Platform cannot be empty',
+  boughtDateString: 'Bought Date must be a valid date.',
+  boughtDateTimestamp: 'Bought Date must be a valid timestamp.',
+};
+
+const baseValidation = z.object({
+  title: z.string().trim().min(1, errors.title),
+  platform: z.enum([
+    'xbox360',
+    'xboxone',
+    'xboxseriesx',
+    'nintendods',
+    'nintendo3ds',
+    'nintendoswitch',
+  ]),
+  mainImage: z.string().url(errors.url),
+});
+
+export const GameEntryRequest = baseValidation.extend({
+  boughtDate: z.string().refine((date) => isValidDate(new Date(date)), {
+    message: errors.boughtDateString,
+  }),
+});
+
+export const GameEntryEntry = baseValidation.extend({
+  boughtDate: z
+    .number()
+    .or(z.string())
+    .transform((date, ctx) => {
+      if (typeof date === 'string') {
+        const validDate = isValidDate(new Date(date));
+        if (!validDate) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Invalid date string.',
+          });
+          return z.NEVER;
+        }
+        return new Date(date).getTime();
+      }
+      return date;
+    })
+    .refine(isValidDate, {
+      message: errors.boughtDateTimestamp,
+    }),
+});
+
+export const GameEntryEntryWithId = GameEntryEntry.extend({
+  _id: z.string(),
+});
+
+// export const TravelLogProperties = TravelLogRequest.keyof().Enum;
+// export type TravelLogProperty = keyof typeof TravelLogProperties;
+// export type TravelLogPropertyWithoutLocation = Exclude<
+//   TravelLogProperty,
+//   'latitude' | 'longitude'
+// >;
+
+export type GameEntryRequest = z.infer<typeof GameEntryRequest>;
+export type GameEntryEntry = z.infer<typeof GameEntryEntry>;
+export type GameEntryEntryWithId = z.infer<typeof GameEntryEntryWithId>;
