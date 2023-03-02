@@ -18,7 +18,7 @@ export default function GameCard(props: GameCardProps) {
       </div>
       <div className="card-body">
         <h2 className="card-title">{props.game.title}</h2>
-        <div className="badge badge-accent">{props.game.platform}</div>
+        <div className="badge badge-primary">{props.game.platform}</div>
       </div>
     </div>
   );

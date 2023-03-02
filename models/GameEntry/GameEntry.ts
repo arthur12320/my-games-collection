@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-redeclare */
-import { z } from 'zod';
+import { array, z } from 'zod';
 import isValidDate from 'date-fns/isValid';
+import pl from 'date-fns/esm/locale/pl/index.js';
 
 const errors = {
   title: 'Title cannot be empty.',
@@ -10,16 +11,18 @@ const errors = {
   boughtDateTimestamp: 'Bought Date must be a valid timestamp.',
 };
 
+export const validPlatforms = [
+  'xbox360',
+  'xboxone',
+  'xboxseriesx',
+  'nintendods',
+  'nintendo3ds',
+  'nintendoswitch',
+];
+
 const baseValidation = z.object({
   title: z.string().trim().min(1, errors.title),
-  platform: z.enum([
-    'xbox360',
-    'xboxone',
-    'xboxseriesx',
-    'nintendods',
-    'nintendo3ds',
-    'nintendoswitch',
-  ]),
+  platform: z.enum(validPlatforms),
   mainImage: z.string().url(errors.url),
 });
 
@@ -56,12 +59,10 @@ export const GameEntryEntryWithId = GameEntryEntry.extend({
   _id: z.string(),
 });
 
-// export const TravelLogProperties = TravelLogRequest.keyof().Enum;
-// export type TravelLogProperty = keyof typeof TravelLogProperties;
-// export type TravelLogPropertyWithoutLocation = Exclude<
-//   TravelLogProperty,
-//   'latitude' | 'longitude'
-// >;
+export const GameEntryProperties = GameEntryRequest.keyof().Enum;
+export type GameEntryProperty = keyof typeof GameEntryProperties;
+export const GameEntryPlataforms = GameEntryProperties
+
 
 export type GameEntryRequest = z.infer<typeof GameEntryRequest>;
 export type GameEntryEntry = z.infer<typeof GameEntryEntry>;
