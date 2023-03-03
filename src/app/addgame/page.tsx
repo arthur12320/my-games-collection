@@ -16,7 +16,7 @@ const gameEntryInputs: Record<
   {
     label?: string;
     type: 'text' | 'url' | 'date' | 'select';
-    option?: String[];
+    option?: typeof validPlatforms;
   }
 > = {
   title: {
@@ -28,7 +28,7 @@ const gameEntryInputs: Record<
   },
   platform: {
     type: 'select',
-    option: validPlatforms,
+    option: validPlatforms as typeof validPlatforms,
   },
   boughtDate: {
     label: 'Day of Purchase',

@@ -7,10 +7,16 @@ a quick application to store/display my games collections
 - [X] fix grid height
 - [X] configure DB
 - [ ] configure routes
-  - [ ] POST
-  - [ ] GET
-- [ ] make adding page
-- [ ] make searchbar
+  - [X] POST
+  - [X] GET
+  - [ ] PATCH
+  - [ ] DELETE
+- [X] make adding page
+- [X] make searchbar
+- [ ] add details page
+- [ ] add filter by console
+- [ ] add delete option
+- [ ] add edit options
 
 
 ## game entry format

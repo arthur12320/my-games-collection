@@ -1,10 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import {
-  GameEntries,
   GameEntryEntry,
   GameEntryWithObjectId,
 } from '../../../models/GameEntry/GameEntries';
+
+import { GameEntries } from '../../../models/GameEntry/GameEntriesDb';
 
 class ErrorWithStatusCode extends Error {
   status = 500;
@@ -32,7 +33,15 @@ export default async function handler(
         });
       }
       case 'GET': {
-        return res.json({ mm: 'mm' });
+        let logs;
+        if (req.query.title) {
+          logs = await GameEntries.find({
+            title: new RegExp(req.query.title as string, 'i'),
+          }).toArray();
+        } else {
+          logs = await GameEntries.find().toArray();
+        }
+        return res.status(200).json(logs);
       }
       default: {
         throw new ErrorWithStatusCode('Not Supported.', 405);

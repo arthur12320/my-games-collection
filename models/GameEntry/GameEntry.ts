@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-redeclare */
-import { array, z } from 'zod';
+import { z } from 'zod';
 import isValidDate from 'date-fns/isValid';
-import pl from 'date-fns/esm/locale/pl/index.js';
 
 const errors = {
   title: 'Title cannot be empty.',
@@ -18,7 +17,7 @@ export const validPlatforms = [
   'nintendods',
   'nintendo3ds',
   'nintendoswitch',
-];
+] as const;
 
 const baseValidation = z.object({
   title: z.string().trim().min(1, errors.title),
@@ -61,8 +60,7 @@ export const GameEntryEntryWithId = GameEntryEntry.extend({
 
 export const GameEntryProperties = GameEntryRequest.keyof().Enum;
 export type GameEntryProperty = keyof typeof GameEntryProperties;
-export const GameEntryPlataforms = GameEntryProperties
-
+export const GameEntryPlataforms = GameEntryProperties;
 
 export type GameEntryRequest = z.infer<typeof GameEntryRequest>;
 export type GameEntryEntry = z.infer<typeof GameEntryEntry>;
