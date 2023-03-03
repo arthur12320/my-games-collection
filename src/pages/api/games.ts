@@ -36,7 +36,10 @@ export default async function handler(
         let logs;
         if (req.query.title) {
           logs = await GameEntries.find({
-            title: new RegExp(req.query.title as string, 'i'),
+            $or: [
+              { title: new RegExp(req.query.title as string, 'i') },
+              { platform: new RegExp(req.query.title as string, 'i') },
+            ],
           }).toArray();
         } else {
           logs = await GameEntries.find().toArray();

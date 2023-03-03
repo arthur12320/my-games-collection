@@ -7,7 +7,9 @@ export default function NavBar(props: NavBarProps) {
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
-        <a className="btn btn-ghost normal-case text-xl">My Games Collection</a>
+        <a href="/" className="btn btn-ghost normal-case text-xl">
+          My Games Collection
+        </a>
       </div>
       <div className="flex-none gap-2">
         <div className="form-control">

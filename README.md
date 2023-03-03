@@ -17,6 +17,7 @@ a quick application to store/display my games collections
 - [ ] add filter by console
 - [ ] add delete option
 - [ ] add edit options
+- [ ] add pagination
 
 
 ## game entry format
@@ -33,3 +34,4 @@ a quick application to store/display my games collections
 ### future ideas
 - [ ] add "light" mode
 - [ ] add indie games list
+- [ ] add scroll pagination/ lazy loading
