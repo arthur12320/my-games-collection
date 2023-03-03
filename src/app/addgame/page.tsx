@@ -15,7 +15,7 @@ const gameEntryInputs: Record<
   GameEntryProperty,
   {
     label?: string;
-    type: 'text' | 'url' | 'date' | 'select';
+    type: 'text' | 'url' | 'date' | 'select' | 'password';
     option?: typeof validPlatforms;
   }
 > = {
@@ -33,6 +33,10 @@ const gameEntryInputs: Record<
   boughtDate: {
     label: 'Day of Purchase',
     type: 'date',
+  },
+  apiKey: {
+    label: 'API key',
+    type: 'password',
   },
 };
 
@@ -58,6 +62,7 @@ export default function AddGame({ onCancel, onComplete }: TravelLogFormProps) {
       platform: 'xbox360',
       boughtDate: nowString,
       mainImage: '',
+      apiKey: localStorage.getItem('apiKey') ?? '',
     },
   });
   const onSubmit: SubmitHandler<GameEntryRequest> = async (data) => {
@@ -71,6 +76,7 @@ export default function AddGame({ onCancel, onComplete }: TravelLogFormProps) {
         body: JSON.stringify(data),
       });
       if (response.ok) {
+        localStorage.setItem('apiKey', data.apiKey);
         router.push('/');
         reset();
         if (onComplete) {

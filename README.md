@@ -13,6 +13,7 @@ a quick application to store/display my games collections
   - [ ] DELETE
 - [X] make adding page
 - [X] make searchbar
+- [X] add api key security
 - [ ] add details page
 - [ ] add filter by console
 - [ ] add delete option

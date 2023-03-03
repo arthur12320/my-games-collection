@@ -7,6 +7,9 @@ import {
 
 import { GameEntries } from '../../../models/GameEntry/GameEntriesDb';
 
+if (!process.env.API_KEY) {
+  throw new Error('API_KEY missing in env');
+}
 class ErrorWithStatusCode extends Error {
   status = 500;
 
@@ -25,6 +28,10 @@ export default async function handler(
   try {
     switch (req.method) {
       case 'POST': {
+        if (req.body.apiKey !== process.env.API_KEY) {
+          throw new ErrorWithStatusCode('Unauthorized.', 401);
+        }
+        delete req.body.apiKey;
         const validatedLog = await GameEntryEntry.parseAsync(req.body);
         const insertResult = await GameEntries.insertOne(validatedLog);
         return res.status(200).json({

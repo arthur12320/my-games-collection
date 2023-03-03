@@ -8,6 +8,7 @@ const errors = {
   platform: 'Platform cannot be empty',
   boughtDateString: 'Bought Date must be a valid date.',
   boughtDateTimestamp: 'Bought Date must be a valid timestamp.',
+  apiKey: 'API Key cannot be empty.',
 };
 
 export const validPlatforms = [
@@ -29,6 +30,7 @@ export const GameEntryRequest = baseValidation.extend({
   boughtDate: z.string().refine((date) => isValidDate(new Date(date)), {
     message: errors.boughtDateString,
   }),
+  apiKey: z.string().min(1, errors.apiKey),
 });
 
 export const GameEntryEntry = baseValidation.extend({
