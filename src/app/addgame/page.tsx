@@ -42,12 +42,12 @@ const gameEntryInputs: Record<
 
 const nowString = formatDate(new Date(), 'yyyy-MM-dd');
 
-interface TravelLogFormProps {
-  onComplete: () => void;
-  onCancel: () => void;
-}
+// type GameEntryFormProps = {
+//   onComplete: () => void;
+//   onCancel: () => void ;
+// };
 
-export default function AddGame({ onCancel, onComplete }: TravelLogFormProps) {
+export default function AddGame() {
   const [formError, setFormError] = useState('');
   const router = useRouter();
   const {
@@ -62,7 +62,10 @@ export default function AddGame({ onCancel, onComplete }: TravelLogFormProps) {
       platform: 'xbox360',
       boughtDate: nowString,
       mainImage: '',
-      apiKey: localStorage.getItem('apiKey') ?? '',
+      apiKey:
+        typeof window !== 'undefined'
+          ? localStorage.getItem('apiKey') ?? ''
+          : '',
     },
   });
   const onSubmit: SubmitHandler<GameEntryRequest> = async (data) => {
@@ -79,9 +82,6 @@ export default function AddGame({ onCancel, onComplete }: TravelLogFormProps) {
         localStorage.setItem('apiKey', data.apiKey);
         router.push('/');
         reset();
-        if (onComplete) {
-          onComplete();
-        }
       } else {
         const json = await response.json();
         throw new Error(json.message);
@@ -97,12 +97,7 @@ export default function AddGame({ onCancel, onComplete }: TravelLogFormProps) {
       <div className="flex justify-end">
         <button
           onClick={() => {
-            if (onCancel) {
-              onCancel();
-            } else {
-              router.push('/');
-            }
-
+            router.push('/');
             reset();
           }}
           className="btn btn-secondary"
