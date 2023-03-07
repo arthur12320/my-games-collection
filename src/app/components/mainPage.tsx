@@ -5,7 +5,10 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import GameCard from './gameCard';
-import { GameEntryEntryWithId, GameEntryRequest } from '../../../models/GameEntry/GameEntry';
+import {
+  GameEntryEntryWithId,
+  GameEntryRequest,
+} from '../../../models/GameEntry/GameEntry';
 import NavBar from './navBar';
 import GameInfo from './gameInfo';
 
@@ -72,9 +75,7 @@ export default function MainPage() {
                   throw new Error(json.message);
                 }
               } catch (e) {
-                const error = e as Error;
-                // TODO: cleanup zod error message
-                // setFormError(error.message);
+                // TODO: treat this error
               }
             }}
           />
@@ -88,8 +89,6 @@ export default function MainPage() {
             games.map((game: GameEntryEntryWithId) => (
               <GameCard
                 onSelect={() => {
-                  console.log('called')
-                  console.log(game)
                   setSelectedGame(game);
                   setShowCard(true);
                 }}
