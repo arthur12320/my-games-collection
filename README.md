@@ -21,7 +21,7 @@ a quick application to store/display my games collections
 - [ ] add pagination
 - [ ] fix spagheti on getGameById
 - [ ] add buttons to filter
-- [ ] add wanted games
+- [X] add wishlisted games
 
 
 ## game entry format
