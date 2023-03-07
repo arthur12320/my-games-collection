@@ -15,7 +15,7 @@ const gameEntryInputs: Record<
   GameEntryProperty,
   {
     label?: string;
-    type: 'text' | 'url' | 'date' | 'select' | 'password';
+    type: 'text' | 'url' | 'date' | 'select' | 'password' | 'checkbox';
     option?: typeof validPlatforms;
   }
 > = {
@@ -33,6 +33,10 @@ const gameEntryInputs: Record<
   boughtDate: {
     label: 'Day of Purchase',
     type: 'date',
+  },
+  bought: {
+    label: 'Bought',
+    type: 'checkbox',
   },
   apiKey: {
     label: 'API key',
@@ -59,6 +63,7 @@ export default function AddGame() {
     resolver: zodResolver(GameEntryRequest),
     defaultValues: {
       title: '',
+      bought: true,
       boughtDate: nowString,
       mainImage: '',
       apiKey:

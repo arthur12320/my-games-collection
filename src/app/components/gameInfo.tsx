@@ -22,7 +22,9 @@ export default function GameInfo(props: GameInfoProps) {
               <img
                 src={props.game ? props.game.mainImage : ''}
                 alt={props.game ? props.game.title : ''}
-                className="pt-4 w-96 mx-auto"
+                className={`pt-4 w-96 mx-auto ${
+                  props.game && props.game.bought ? '' : 'grayscale'
+                }`}
               />
             </picture>
             <h3 className="font-bold text-lg mt-5">

@@ -17,13 +17,18 @@ export default function GameCard(props: GameCardProps) {
           <img
             src={props.game.mainImage}
             alt={props.game.title}
-            className="pt-4 w-96"
+            className={`pt-4 w-96 ${props.game.bought ? '' : 'grayscale'}`}
           />
         </picture>
       </div>
       <div className="card-body">
         <h2 className="card-title">{props.game.title}</h2>
         <div className="badge badge-primary">{props.game.platform}</div>
+        {!props.game.bought ? (
+          <div className="badge badge-accent">wishlist</div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

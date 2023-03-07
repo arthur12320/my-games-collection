@@ -48,6 +48,21 @@ export default async function handler(
               { platform: new RegExp(req.query.title as string, 'i') },
             ],
           }).toArray();
+          if (
+            req.query.title === 'wishlist' ||
+            req.query.title === 'wish list'
+          ) {
+            const extraLogs = await GameEntries.find({
+              bought: false,
+            }).toArray();
+            logs = [...logs, ...extraLogs];
+          }
+          if (req.query.title === 'bought') {
+            const extraLogs = await GameEntries.find({
+              bought: true,
+            }).toArray();
+            logs = [...logs, ...extraLogs];
+          }
         } else {
           logs = await GameEntries.find().toArray();
         }
