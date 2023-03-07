@@ -10,18 +10,19 @@ a quick application to store/display my games collections
   - [X] POST
   - [X] GET
   - [ ] PATCH
-  - [ ] DELETE
+  - [X] DELETE
 - [X] make adding page
 - [X] make searchbar
 - [X] add api key security
 - [X] add details page
 - [X] add filter by console
-- [ ] add delete option
+- [X] add delete option
 - [ ] add edit options
 - [ ] add pagination
 - [ ] fix spagheti on getGameById
 - [ ] add buttons to filter
 - [X] add wishlisted games
+- [ ] ~~change to mongoose~~
 
 
 ## game entry format

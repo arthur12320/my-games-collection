@@ -5,7 +5,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import GameCard from './gameCard';
-import { GameEntryEntryWithId } from '../../../models/GameEntry/GameEntry';
+import { GameEntryEntryWithId, GameEntryRequest } from '../../../models/GameEntry/GameEntry';
 import NavBar from './navBar';
 import GameInfo from './gameInfo';
 
@@ -19,7 +19,7 @@ export default function MainPage() {
   const [showCard, setShowCard] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
+  function fetchData() {
     setLoading(true);
     fetch(
       encodeURI(
@@ -31,6 +31,10 @@ export default function MainPage() {
         setLoading(false);
         setGames(json);
       });
+  }
+
+  useEffect(() => {
+    fetchData();
   }, [searchValue]);
 
   return (
@@ -48,6 +52,31 @@ export default function MainPage() {
             onClose={() => {
               setShowCard(false);
             }}
+            onDelete={async (apiKey) => {
+              try {
+                const sendingGame = selectedGame as unknown as GameEntryRequest;
+                sendingGame.apiKey = apiKey;
+                const response = await fetch('/api/games', {
+                  method: 'DELETE',
+                  headers: {
+                    'content-type': 'application/json',
+                  },
+                  body: JSON.stringify(selectedGame),
+                });
+                if (response.ok) {
+                  localStorage.setItem('apiKey', apiKey);
+                  fetchData();
+                  // reset();
+                } else {
+                  const json = await response.json();
+                  throw new Error(json.message);
+                }
+              } catch (e) {
+                const error = e as Error;
+                // TODO: cleanup zod error message
+                // setFormError(error.message);
+              }
+            }}
           />
         ) : (
           <></>
@@ -59,6 +88,8 @@ export default function MainPage() {
             games.map((game: GameEntryEntryWithId) => (
               <GameCard
                 onSelect={() => {
+                  console.log('called')
+                  console.log(game)
                   setSelectedGame(game);
                   setShowCard(true);
                 }}

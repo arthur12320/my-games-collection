@@ -68,6 +68,15 @@ export default async function handler(
         }
         return res.status(200).json(logs);
       }
+      case 'DELETE': {
+        if (req.body.title && req.body.platform) {
+          await GameEntries.deleteOne({
+            $and: [{ title: req.body.title }, { platform: req.body.platform }],
+          });
+          return res.status(200).json({ message: 'deleted' });
+        }
+        return res.status(400).json({ message: 'error parsing data' });
+      }
       default: {
         throw new ErrorWithStatusCode('Not Supported.', 405);
       }

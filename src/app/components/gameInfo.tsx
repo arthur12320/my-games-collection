@@ -1,12 +1,17 @@
 'use client';
 
+import { useState } from 'react';
 import { GameEntryEntryWithId } from '../../../models/GameEntry/GameEntry';
 
 export type GameInfoProps = {
   game: GameEntryEntryWithId | null;
   onClose: () => void;
+  onDelete: (apiKey: string) => void;
 };
 export default function GameInfo(props: GameInfoProps) {
+  const [apiKey, setApiKey] = useState(
+    typeof window !== 'undefined' ? localStorage.getItem('apiKey') ?? '' : ''
+  );
   return (
     <>
       <>
@@ -46,6 +51,40 @@ export default function GameInfo(props: GameInfoProps) {
                 href={props.game?.mainImage}
               >{` ${props.game?.mainImage.substring(0, 25)}...`}</a>
             </p>
+            <label htmlFor="my-modal" className="btn btn-error">
+              delete
+            </label>
+            <input type="checkbox" id="my-modal" className="modal-toggle" />
+            <div className="modal">
+              <div className="modal-box">
+                <h3 className="font-bold text-lg">Confirm Deletion</h3>
+                <p className="py-4">
+                  Once deleted you cannot undo this action!
+                </p>
+                <p className="py-4">api key:</p>
+                <input
+                  className="input input-bordered"
+                  type="password"
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                />
+                <div className="modal-action">
+                  <label
+                    onClick={() => {
+                      props.onClose();
+                      props.onDelete(apiKey);
+                    }}
+                    htmlFor="my-modal"
+                    className="btn btn-error"
+                  >
+                    Confirm
+                  </label>
+                  <label htmlFor="my-modal" className="btn">
+                    Cancel
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </>
