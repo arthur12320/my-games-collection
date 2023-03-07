@@ -7,11 +7,16 @@ import { useRouter } from 'next/navigation';
 import GameCard from './gameCard';
 import { GameEntryEntryWithId } from '../../../models/GameEntry/GameEntry';
 import NavBar from './navBar';
+import GameInfo from './gameInfo';
 
 export default function MainPage() {
   const [games, setGames] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [loading, setLoading] = useState(false);
+  const [selectedGame, setSelectedGame] = useState(
+    null as unknown as GameEntryEntryWithId
+  );
+  const [showCard, setShowCard] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -37,12 +42,29 @@ export default function MainPage() {
           }}
           searchValue={searchValue}
         />
+        {showCard ? (
+          <GameInfo
+            game={selectedGame}
+            onClose={() => {
+              setShowCard(false);
+            }}
+          />
+        ) : (
+          <></>
+        )}
         <div className="grid grid-cols-1 gap-6 m-5 md:grid-cols-2 lg:grid-cols-4 items-start h-max">
           {loading ? (
             <progress className="progress w-56"></progress>
           ) : (
             games.map((game: GameEntryEntryWithId) => (
-              <GameCard key={game._id} game={game} />
+              <GameCard
+                onSelect={() => {
+                  setSelectedGame(game);
+                  setShowCard(true);
+                }}
+                key={game._id}
+                game={game}
+              />
             ))
           )}
         </div>
@@ -50,7 +72,7 @@ export default function MainPage() {
           onClick={() => {
             router.push('/addgame');
           }}
-          className=" fixed right-8 bottom-8 btn btn-primary btn-xs sm:btn-sm md:btn-md lg:btn-lg"
+          className=" fixed right-8 bottom-8 btn btn-primary btn-md md:btn-md lg:btn-lg"
         >
           Add Game
         </button>

@@ -22,7 +22,7 @@ class ErrorWithStatusCode extends Error {
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
-    GameEntryWithObjectId | GameEntryWithObjectId[] | { message: string }
+    GameEntryWithObjectId | GameEntryWithObjectId[] | { message: string } | null
   >
 ) {
   try {

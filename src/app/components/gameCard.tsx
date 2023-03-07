@@ -2,11 +2,16 @@ import { GameEntryEntryWithId } from '../../../models/GameEntry/GameEntry';
 
 export type GameCardProps = {
   game: GameEntryEntryWithId;
+  onSelect: () => void;
 };
 
 export default function GameCard(props: GameCardProps) {
   return (
-    <div className="card bg-base-100 shadow-xl mx-auto">
+    <div
+      // eslint-disable-next-line no-underscore-dangle
+      onClick={() => props.onSelect()}
+      className="card bg-base-100 shadow-xl mx-auto hover:shadow-sm"
+    >
       <div className="flex justify-center items-center">
         <picture>
           <img

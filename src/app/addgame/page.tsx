@@ -59,7 +59,6 @@ export default function AddGame() {
     resolver: zodResolver(GameEntryRequest),
     defaultValues: {
       title: '',
-      platform: 'xbox360',
       boughtDate: nowString,
       mainImage: '',
       apiKey:

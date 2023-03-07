@@ -14,11 +14,13 @@ a quick application to store/display my games collections
 - [X] make adding page
 - [X] make searchbar
 - [X] add api key security
-- [ ] add details page
-- [ ] add filter by console
+- [X] add details page
+- [X] add filter by console
 - [ ] add delete option
 - [ ] add edit options
 - [ ] add pagination
+- [ ] fix spagheti on getGameById
+- [ ] add buttons to filter
 
 
 ## game entry format
