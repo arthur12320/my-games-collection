@@ -6,10 +6,10 @@ a quick application to store/display my games collections
 - [X] configure project
 - [X] fix grid height
 - [X] configure DB
-- [ ] configure routes
+- [X] configure routes
   - [X] POST
   - [X] GET
-  - [ ] PATCH
+  - [X] PATCH
   - [X] DELETE
 - [X] make adding page
 - [X] make searchbar
@@ -17,12 +17,14 @@ a quick application to store/display my games collections
 - [X] add details page
 - [X] add filter by console
 - [X] add delete option
-- [ ] add edit options
+- [X] add edit options
 - [ ] add pagination
 - [ ] fix spagheti on getGameById
 - [ ] add buttons to filter
 - [X] add wishlisted games
 - [ ] ~~change to mongoose~~
+- [ ] treat deelete errors
+- [ ] make bought date only required if bought
 
 
 ## game entry format

@@ -78,6 +78,9 @@ export default function MainPage() {
                 // TODO: treat this error
               }
             }}
+            updateAll={() => {
+              fetchData();
+            }}
           />
         ) : (
           <></>

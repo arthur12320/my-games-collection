@@ -2,16 +2,20 @@
 
 import { useState } from 'react';
 import { GameEntryEntryWithId } from '../../../models/GameEntry/GameEntry';
+import UpdateGame from './updateGame';
 
 export type GameInfoProps = {
   game: GameEntryEntryWithId | null;
   onClose: () => void;
   onDelete: (apiKey: string) => void;
+  updateAll: () => void;
 };
 export default function GameInfo(props: GameInfoProps) {
   const [apiKey, setApiKey] = useState(
     typeof window !== 'undefined' ? localStorage.getItem('apiKey') ?? '' : ''
   );
+
+  const [showEdit, setShowEdit] = useState(false);
   return (
     <>
       <>
@@ -51,6 +55,9 @@ export default function GameInfo(props: GameInfoProps) {
                 href={props.game?.mainImage}
               >{` ${props.game?.mainImage.substring(0, 25)}...`}</a>
             </p>
+            <label onClick={() => setShowEdit(true)} className="btn btn-error">
+              update
+            </label>
             <label htmlFor="my-modal" className="btn btn-error">
               delete
             </label>
@@ -86,6 +93,19 @@ export default function GameInfo(props: GameInfoProps) {
               </div>
             </div>
           </div>
+
+          {showEdit && (
+            <UpdateGame
+              game={props.game as unknown as GameEntryEntryWithId}
+              onCancel={() => {
+                setShowEdit(false);
+              }}
+              onComplete={() => {
+                props.onClose();
+                props.updateAll();
+              }}
+            />
+          )}
         </div>
       </>
     </>

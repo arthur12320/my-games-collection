@@ -68,7 +68,34 @@ export default async function handler(
         }
         return res.status(200).json(logs);
       }
+      case 'PATCH': {
+        if (req.body.newGame.apiKey !== process.env.API_KEY) {
+          throw new ErrorWithStatusCode('Unauthorized.', 401);
+        }
+        if (req.body.oldGame && req.body.newGame) {
+          const filter = {
+            $and: [
+              { title: req.body.oldGame.title },
+              { platform: req.body.oldGame.platform },
+            ],
+          };
+
+          const newgame = req.body.newGame;
+          // eslint-disable-next-line no-underscore-dangle
+          delete newgame._id;
+          const update = {
+            $set: newgame,
+          };
+
+          await GameEntries.updateOne(filter, update);
+          return res.status(200).json({ message: 'updated' });
+        }
+        return res.status(400).json({ message: 'error parsing data' });
+      }
       case 'DELETE': {
+        if (req.body.apiKey !== process.env.API_KEY) {
+          throw new ErrorWithStatusCode('Unauthorized.', 401);
+        }
         if (req.body.title && req.body.platform) {
           await GameEntries.deleteOne({
             $and: [{ title: req.body.title }, { platform: req.body.platform }],
