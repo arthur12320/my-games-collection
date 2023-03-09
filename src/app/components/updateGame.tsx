@@ -85,7 +85,6 @@ export default function UpdateGame(props: GameUpdateFormProps) {
         oldGame: updatingGame,
         newGame: data,
       };
-      console.log('enviadno');
       const response = await fetch('/api/games', {
         method: 'PATCH',
         headers: {

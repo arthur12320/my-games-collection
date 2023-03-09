@@ -149,6 +149,9 @@ export default function AddGame() {
                   }`}
                   {...register(property)}
                 >
+                  <option value="" selected disabled hidden>
+                    select
+                  </option>
                   {value.option?.map((option, i) => (
                     <option key={i} value={option as string}>
                       {option}
