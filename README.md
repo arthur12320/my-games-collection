@@ -30,6 +30,7 @@ a quick application to store/display my games collections
 
 ## Known Bugs
 - [ ] fix platform changing on update
+- [ ] on responsive search close, changee search to ''
 
 
 ## game entry format

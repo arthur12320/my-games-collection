@@ -82,7 +82,10 @@ export default function NavBar(props: NavBarProps) {
             className="input input-bordered w-full"
           />
           <button
-            onClick={() => setResponsiveNavbar(false)}
+            onClick={() => {
+              setResponsiveNavbar(false);
+              props.onSearchChange({target:{value:''}});
+            }}
             className="btn mx-2 btn-circle btn-outline"
           >
             <svg
