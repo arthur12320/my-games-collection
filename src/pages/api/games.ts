@@ -57,6 +57,12 @@ export default async function handler(
             }).toArray();
             logs = [...logs, ...extraLogs];
           }
+          if (req.query.title === 'beaten') {
+            const extraLogs = await GameEntries.find({
+              beaten: true,
+            }).toArray();
+            logs = [...logs, ...extraLogs];
+          }
           if (req.query.title === 'bought') {
             const extraLogs = await GameEntries.find({
               bought: true,
