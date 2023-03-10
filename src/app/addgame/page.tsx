@@ -42,6 +42,10 @@ const gameEntryInputs: Record<
     label: 'API key',
     type: 'password',
   },
+  beaten: {
+    label: 'Beaten',
+    type: 'checkbox',
+  },
 };
 
 const nowString = formatDate(new Date(), 'yyyy-MM-dd');
@@ -64,6 +68,7 @@ export default function AddGame() {
     defaultValues: {
       title: '',
       bought: true,
+      beaten: false,
       boughtDate: nowString,
       mainImage: '',
       apiKey:

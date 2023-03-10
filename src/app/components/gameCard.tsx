@@ -29,6 +29,11 @@ export default function GameCard(props: GameCardProps) {
         ) : (
           <></>
         )}
+        {props.game.beaten ? (
+          <div className="badge badge-accent">beaten</div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

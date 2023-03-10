@@ -10,6 +10,7 @@ const errors = {
   boughtDateTimestamp: 'Bought Date must be a valid timestamp.',
   bought: 'You have to inform if the game has being bought',
   apiKey: 'API Key cannot be empty.',
+  beaten: 'You have to inform if the game has being beaten',
 };
 
 export const validPlatforms = [
@@ -28,6 +29,10 @@ const baseValidation = z.object({
   bought: z.boolean({
     required_error: errors.bought,
     invalid_type_error: errors.bought,
+  }),
+  beaten: z.boolean({
+    required_error: errors.beaten,
+    invalid_type_error: errors.beaten,
   }),
 });
 

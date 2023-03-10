@@ -50,6 +50,10 @@ export default function GameInfo(props: GameInfoProps) {
               ).toLocaleDateString()}`}
             </p>
             <p className="py-2">
+              <b>Beaten:</b>
+              {` ${props.game?.beaten ? '✅' : '❌'}`}
+            </p>
+            <p className="py-2">
               <b>Image Link:</b>
               <a
                 href={props.game?.mainImage}

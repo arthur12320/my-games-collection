@@ -23,8 +23,13 @@ a quick application to store/display my games collections
 - [ ] add buttons to filter
 - [X] add wishlisted games
 - [ ] ~~change to mongoose~~
-- [ ] treat deelete errors
+- [ ] treat delete errors
 - [ ] make bought date only required if bought
+- [ ] add played tag
+
+
+## Known Bugs
+- [ ] fix platform changing on update
 
 
 ## game entry format

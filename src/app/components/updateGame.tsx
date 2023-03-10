@@ -43,6 +43,10 @@ const gameEntryInputs: Record<
     label: 'API key',
     type: 'password',
   },
+  beaten: {
+    label: 'Beaten',
+    type: 'checkbox',
+  },
 };
 
 const nowString = formatDate(new Date(), 'yyyy-MM-dd');
@@ -66,6 +70,7 @@ export default function UpdateGame(props: GameUpdateFormProps) {
     defaultValues: {
       title: props.game.title,
       bought: props.game.bought,
+      beaten: props.game.beaten,
       boughtDate: props.game.boughtDate
         ? formatDate(new Date(props.game.boughtDate), 'yyyy-MM-dd')
         : nowString,
