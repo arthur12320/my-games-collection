@@ -84,7 +84,7 @@ export default function NavBar(props: NavBarProps) {
           <button
             onClick={() => {
               setResponsiveNavbar(false);
-              props.onSearchChange({target:{value:''}});
+              props.onSearchChange({ target: { value: '' } });
             }}
             className="btn mx-2 btn-circle btn-outline"
           >
