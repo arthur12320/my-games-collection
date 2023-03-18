@@ -41,33 +41,42 @@ export default async function handler(
       }
       case 'GET': {
         let logs;
-        if (req.query.title) {
-          logs = await GameEntries.find({
-            $or: [
-              { title: new RegExp(req.query.title as string, 'i') },
-              { platform: new RegExp(req.query.title as string, 'i') },
-            ],
-          }).toArray();
-          if (
-            req.query.title === 'wishlist' ||
-            req.query.title === 'wish list'
-          ) {
-            const extraLogs = await GameEntries.find({
-              bought: false,
-            }).toArray();
-            logs = [...logs, ...extraLogs];
+        const search = req.query.title;
+        const { beaten } = req.query;
+        const { bought } = req.query;
+        const { platform } = req.query;
+        console.log(req.query);
+        if (search || beaten !== undefined || bought !== undefined) {
+          let andSearch: {}[] = [];
+          let searchParams = {};
+          if (search) {
+            console.log('jj');
+            searchParams = {
+              title: new RegExp(search as string, 'i'),
+            };
           }
-          if (req.query.title === 'beaten') {
-            const extraLogs = await GameEntries.find({
-              beaten: true,
+
+          console.log('her');
+          if (beaten !== undefined || bought !== undefined) {
+            console.log('aqi');
+            if (beaten !== undefined) {
+              andSearch = [...andSearch, { beaten: beaten !== 'false' }];
+            }
+            if (bought !== undefined) {
+              console.log('hh');
+              andSearch = [...andSearch, { bought: bought !== 'false' }];
+            }
+            if (platform !== undefined) {
+              andSearch = [...andSearch, { platform }];
+            }
+            logs = await GameEntries.find({
+              $and: [...andSearch, searchParams],
             }).toArray();
-            logs = [...logs, ...extraLogs];
-          }
-          if (req.query.title === 'bought') {
-            const extraLogs = await GameEntries.find({
-              bought: true,
-            }).toArray();
-            logs = [...logs, ...extraLogs];
+            console.log({
+              $and: [...andSearch, searchParams],
+            });
+          } else {
+            logs = await GameEntries.find(searchParams).toArray();
           }
         } else {
           logs = await GameEntries.find().toArray();

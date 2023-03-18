@@ -20,12 +20,13 @@ a quick application to store/display my games collections
 - [X] add edit options
 - [ ] add pagination
 - [ ] fix spagheti on getGameById
-- [ ] add buttons to filter
+- [X] add buttons to filter
 - [X] add wishlisted games
 - [ ] ~~change to mongoose~~
 - [ ] treat delete errors
 - [ ] make bought date only required if bought
 - [ ] add played tag
+- [ ] add select for platform
 
 
 ## Known Bugs

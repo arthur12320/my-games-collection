@@ -15,6 +15,9 @@ import GameInfo from './gameInfo';
 export default function MainPage() {
   const [games, setGames] = useState([]);
   const [searchValue, setSearchValue] = useState('');
+  const [searchBought, setSearchBought] = useState(false);
+  const [searchBeaten, setSearchBeaten] = useState(false);
+  const [searchWishList, setSearchWishList] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedGame, setSelectedGame] = useState(
     null as unknown as GameEntryEntryWithId
@@ -26,7 +29,11 @@ export default function MainPage() {
     setLoading(true);
     fetch(
       encodeURI(
-        `/api/games${searchValue !== '' ? `?title=${searchValue}` : ''}`
+        `/api/games?${searchValue !== '' ? `title=${searchValue}&` : ''}${
+          searchBought ? 'bought=true&' : ''
+        }${searchWishList ? 'bought=false&' : ''}${
+          searchBeaten ? 'beaten=true&' : ''
+        }`
       )
     )
       .then((res) => res.json())
@@ -38,7 +45,7 @@ export default function MainPage() {
 
   useEffect(() => {
     fetchData();
-  }, [searchValue]);
+  }, [searchValue, searchBought, searchWishList, searchBeaten]);
 
   return (
     <>
@@ -85,22 +92,59 @@ export default function MainPage() {
         ) : (
           <></>
         )}
-        <div className="grid grid-cols-1 gap-6 m-5 md:grid-cols-2 lg:grid-cols-4 items-start h-max">
-          {loading ? (
-            <progress className="progress w-56"></progress>
-          ) : (
-            games.map((game: GameEntryEntryWithId) => (
-              <GameCard
-                onSelect={() => {
-                  setSelectedGame(game);
-                  setShowCard(true);
-                }}
-                key={game._id}
-                game={game}
-              />
-            ))
-          )}
-        </div>
+        <>
+          <label className="cursor-pointer label">
+            <span className="label-text">Bought</span>
+            <input
+              type="checkbox"
+              checked={searchBought}
+              onChange={() => {
+                setSearchWishList(false);
+                setSearchBought(!searchBought);
+              }}
+              className="checkbox checkbox-success"
+            />
+          </label>
+          <label className="cursor-pointer label">
+            <span className="label-text">WishList</span>
+            <input
+              type="checkbox"
+              checked={searchWishList}
+              onChange={() => {
+                setSearchBought(false);
+                setSearchWishList(!searchWishList);
+              }}
+              className="checkbox checkbox-success"
+            />
+          </label>
+          <label className="cursor-pointer label">
+            <span className="label-text">Beaten</span>
+            <input
+              type="checkbox"
+              checked={searchBeaten}
+              onChange={() => {
+                setSearchBeaten(!searchBeaten);
+              }}
+              className="checkbox checkbox-success"
+            />
+          </label>
+          <div className="grid grid-cols-1 gap-6 m-5 md:grid-cols-2 lg:grid-cols-4 items-start h-max">
+            {loading ? (
+              <progress className="progress w-56"></progress>
+            ) : (
+              games.map((game: GameEntryEntryWithId) => (
+                <GameCard
+                  onSelect={() => {
+                    setSelectedGame(game);
+                    setShowCard(true);
+                  }}
+                  key={game._id}
+                  game={game}
+                />
+              ))
+            )}
+          </div>
+        </>
         <button
           onClick={() => {
             router.push('/addgame');
