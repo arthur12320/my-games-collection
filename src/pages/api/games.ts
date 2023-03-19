@@ -45,25 +45,22 @@ export default async function handler(
         const { beaten } = req.query;
         const { bought } = req.query;
         const { platform } = req.query;
-        console.log(req.query);
+        
         if (search || beaten !== undefined || bought !== undefined) {
           let andSearch: {}[] = [];
           let searchParams = {};
           if (search) {
-            console.log('jj');
+           
             searchParams = {
               title: new RegExp(search as string, 'i'),
             };
           }
 
-          console.log('her');
           if (beaten !== undefined || bought !== undefined) {
-            console.log('aqi');
             if (beaten !== undefined) {
               andSearch = [...andSearch, { beaten: beaten !== 'false' }];
             }
             if (bought !== undefined) {
-              console.log('hh');
               andSearch = [...andSearch, { bought: bought !== 'false' }];
             }
             if (platform !== undefined) {
@@ -71,15 +68,16 @@ export default async function handler(
             }
             logs = await GameEntries.find({
               $and: [...andSearch, searchParams],
-            }).toArray();
-            console.log({
-              $and: [...andSearch, searchParams],
-            });
+            })
+              .sort({ _id: -1 })
+              .toArray();
           } else {
-            logs = await GameEntries.find(searchParams).toArray();
+            logs = await GameEntries.find(searchParams)
+              .sort({ _id: -1 })
+              .toArray();
           }
         } else {
-          logs = await GameEntries.find().toArray();
+          logs = await GameEntries.find().sort({ _id: -1 }).toArray();
         }
         return res.status(200).json(logs);
       }
