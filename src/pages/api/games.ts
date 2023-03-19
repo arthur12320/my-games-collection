@@ -45,12 +45,11 @@ export default async function handler(
         const { beaten } = req.query;
         const { bought } = req.query;
         const { platform } = req.query;
-        
+
         if (search || beaten !== undefined || bought !== undefined) {
           let andSearch: {}[] = [];
           let searchParams = {};
           if (search) {
-           
             searchParams = {
               title: new RegExp(search as string, 'i'),
             };
