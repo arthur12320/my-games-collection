@@ -8,6 +8,7 @@ import GameCard from './gameCard';
 import {
   GameEntryEntryWithId,
   GameEntryRequest,
+  validPlatforms,
 } from '../../../models/GameEntry/GameEntry';
 import NavBar from './navBar';
 import GameInfo from './gameInfo';
@@ -18,7 +19,10 @@ export default function MainPage() {
   const [searchBought, setSearchBought] = useState(false);
   const [searchBeaten, setSearchBeaten] = useState(false);
   const [searchWishList, setSearchWishList] = useState(false);
+  const [searchPlatform, setSearchPlatform] = useState('all');
+  const translationArray = Object.values(validPlatforms);
   const [loading, setLoading] = useState(false);
+  const [count, setCount] = useState(0);
   const [selectedGame, setSelectedGame] = useState(
     null as unknown as GameEntryEntryWithId
   );
@@ -33,19 +37,20 @@ export default function MainPage() {
           searchBought ? 'bought=true&' : ''
         }${searchWishList ? 'bought=false&' : ''}${
           searchBeaten ? 'beaten=true&' : ''
-        }`
+        }${searchPlatform !== 'all' ? `platform=${searchPlatform}&` : ''}`
       )
     )
       .then((res) => res.json())
       .then((json) => {
         setLoading(false);
-        setGames(json);
+        setGames(json.logs);
+        setCount(json.count);
       });
   }
 
   useEffect(() => {
     fetchData();
-  }, [searchValue, searchBought, searchWishList, searchBeaten]);
+  }, [searchValue, searchBought, searchWishList, searchBeaten, searchPlatform]);
 
   return (
     <>
@@ -128,6 +133,21 @@ export default function MainPage() {
               className="checkbox checkbox-success"
             />
           </label>
+          <label className="cursor-pointer label">
+            <span className="label-text">Platform</span>
+            <select
+              onChange={(e) => setSearchPlatform(e.target.value)}
+              className="select select-bordered w-full "
+            >
+              <option selected>all</option>
+              {translationArray.map((platform) => (
+                <option key={platform} value={platform}>
+                  {platform}
+                </option>
+              ))}
+            </select>
+          </label>
+          <span className="label-text">Count: {count}</span>
           <div className="grid grid-cols-1 gap-6 m-5 md:grid-cols-2 lg:grid-cols-4 items-start h-max">
             {loading ? (
               <progress className="progress w-56"></progress>

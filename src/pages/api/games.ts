@@ -22,7 +22,11 @@ class ErrorWithStatusCode extends Error {
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
-    GameEntryWithObjectId | GameEntryWithObjectId[] | { message: string } | null
+    | GameEntryWithObjectId
+    | GameEntryWithObjectId[]
+    | { logs: GameEntryWithObjectId[]; count: Number }
+    | { message: string }
+    | null
   >
 ) {
   try {
@@ -41,12 +45,18 @@ export default async function handler(
       }
       case 'GET': {
         let logs;
+        let count;
         const search = req.query.title;
         const { beaten } = req.query;
         const { bought } = req.query;
         const { platform } = req.query;
 
-        if (search || beaten !== undefined || bought !== undefined) {
+        if (
+          search ||
+          beaten !== undefined ||
+          bought !== undefined ||
+          platform !== undefined
+        ) {
           let andSearch: {}[] = [];
           let searchParams = {};
           if (search) {
@@ -54,8 +64,11 @@ export default async function handler(
               title: new RegExp(search as string, 'i'),
             };
           }
-
-          if (beaten !== undefined || bought !== undefined) {
+          if (
+            beaten !== undefined ||
+            bought !== undefined ||
+            platform !== undefined
+          ) {
             if (beaten !== undefined) {
               andSearch = [...andSearch, { beaten: beaten !== 'false' }];
             }
@@ -65,20 +78,25 @@ export default async function handler(
             if (platform !== undefined) {
               andSearch = [...andSearch, { platform }];
             }
+            count = await GameEntries.countDocuments({
+              $and: [...andSearch, searchParams],
+            });
             logs = await GameEntries.find({
               $and: [...andSearch, searchParams],
             })
               .sort({ _id: -1 })
               .toArray();
           } else {
+            count = await GameEntries.countDocuments(searchParams);
             logs = await GameEntries.find(searchParams)
               .sort({ _id: -1 })
               .toArray();
           }
         } else {
+          count = await GameEntries.countDocuments();
           logs = await GameEntries.find().sort({ _id: -1 }).toArray();
         }
-        return res.status(200).json(logs);
+        return res.status(200).json({ logs, count });
       }
       case 'PATCH': {
         if (req.body.newGame.apiKey !== process.env.API_KEY) {
