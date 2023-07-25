@@ -71,6 +71,7 @@ export default function UpdateGame(props: GameUpdateFormProps) {
       title: props.game.title,
       bought: props.game.bought,
       beaten: props.game.beaten,
+      platform: props.game.platform,
       boughtDate: props.game.boughtDate
         ? formatDate(new Date(props.game.boughtDate), 'yyyy-MM-dd')
         : nowString,
