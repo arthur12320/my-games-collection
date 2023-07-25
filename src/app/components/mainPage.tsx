@@ -98,7 +98,7 @@ export default function MainPage() {
           <></>
         )}
         <>
-          <div className='lg:w-3/12 m-4 bg-slate-600 rounded drop-shadow-lg p-2'>
+          <div className="lg:w-3/12 m-4 bg-slate-600 rounded drop-shadow-lg p-2">
             <label className="cursor-pointer label">
               <span className="label-text">Bought</span>
               <input
