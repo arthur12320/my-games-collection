@@ -69,7 +69,6 @@ export default function AddGame() {
   const router = useRouter();
 
   const onSubmit = async (data: GameEntryRequest) => {
-    console.log('enviando');
     try {
       setFormError('');
       const response = await fetch('/api/games', {
@@ -88,8 +87,6 @@ export default function AddGame() {
         throw new Error(json.message);
       }
     } catch (e) {
-      console.log('error');
-      console.log(e);
       const error = e as Error;
       // TODO: cleanup zod error message
       setFormError(error.message);
