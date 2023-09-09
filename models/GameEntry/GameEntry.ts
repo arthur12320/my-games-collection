@@ -13,6 +13,12 @@ const errors = {
   beaten: 'You have to inform if the game has being beaten',
 };
 
+export const validConditions = [
+  'CIB',
+  'gameonly',
+]
+
+
 export const validPlatforms = [
   'xbox360',
   'xboxone',
@@ -20,6 +26,14 @@ export const validPlatforms = [
   'nintendods',
   'nintendo3ds',
   'nintendoswitch',
+  'nintendogameboy',
+  'nintendogameboycolor',
+  'nintendogameboyadvanced',
+  'playstation1',
+  'playstation2',
+  'playstation3',
+  'playstation4',
+  'playstation5',
 ] as const;
 
 const baseValidation = z.object({
@@ -39,13 +53,14 @@ const baseValidation = z.object({
 export const GameEntryRequest = baseValidation.extend({
   boughtDate: z.string().refine((date) => isValidDate(new Date(date)), {
     message: errors.boughtDateString,
-  }),
+  }).optional(),
   apiKey: z.string().min(1, errors.apiKey),
 });
 
 export const GameEntryEntry = baseValidation.extend({
   boughtDate: z
     .number()
+    .optional()
     .or(z.string())
     .transform((date, ctx) => {
       if (typeof date === 'string') {
