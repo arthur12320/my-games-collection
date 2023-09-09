@@ -69,7 +69,7 @@ export default function AddGame() {
   const router = useRouter();
 
   const onSubmit = async (data: GameEntryRequest) => {
-    console.log('enviando')
+    console.log('enviando');
     try {
       setFormError('');
       const response = await fetch('/api/games', {
@@ -88,8 +88,8 @@ export default function AddGame() {
         throw new Error(json.message);
       }
     } catch (e) {
-      console.log('error')
-      console.log(e)
+      console.log('error');
+      console.log(e);
       const error = e as Error;
       // TODO: cleanup zod error message
       setFormError(error.message);
@@ -166,7 +166,7 @@ export default function AddGame() {
             value={platform}
             onChange={(e) => setPlatform(e.target.value)}
           >
-            <option value=""  disabled hidden>
+            <option value="" disabled hidden>
               select
             </option>
             {validPlatforms.map((option, i) => (
@@ -238,7 +238,7 @@ export default function AddGame() {
               title,
               mainImage: image,
               platform: platform as
-                 'xbox360'
+                | 'xbox360'
                 | 'xboxone'
                 | 'xboxseriesx'
                 | 'nintendods'
@@ -255,7 +255,7 @@ export default function AddGame() {
               bought,
               beaten,
               boughtDate: bought ? boughtDate : undefined,
-              apiKey
+              apiKey,
             })
           }
         >
