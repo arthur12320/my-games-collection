@@ -60,7 +60,7 @@ export const GameEntryRequest = baseValidation.extend({
 export const GameEntryEntry = baseValidation.extend({
   boughtDate: z
     .number()
-    .optional()
+    
     .or(z.string())
     .transform((date, ctx) => {
       if (typeof date === 'string') {
@@ -78,7 +78,8 @@ export const GameEntryEntry = baseValidation.extend({
     })
     .refine(isValidDate, {
       message: errors.boughtDateTimestamp,
-    }),
+    })
+    .optional(),
 });
 
 export const GameEntryEntryWithId = GameEntryEntry.extend({
