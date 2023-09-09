@@ -16,7 +16,7 @@ import GameInfo from './gameInfo';
 export default function MainPage() {
   const [games, setGames] = useState([]);
   const [searchValue, setSearchValue] = useState('');
-  const [searchBought, setSearchBought] = useState(false);
+  const [searchBought, setSearchBought] = useState(true);
   const [searchBeaten, setSearchBeaten] = useState(false);
   const [searchWishList, setSearchWishList] = useState(false);
   const [searchPlatform, setSearchPlatform] = useState('all');
