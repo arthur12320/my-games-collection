@@ -84,17 +84,17 @@ export default async function handler(
             logs = await GameEntries.find({
               $and: [...andSearch, searchParams],
             })
-              .sort({ _id: -1 })
+              .sort({ title: 1 })
               .toArray();
           } else {
             count = await GameEntries.countDocuments(searchParams);
             logs = await GameEntries.find(searchParams)
-              .sort({ _id: -1 })
+              .sort({ title: 1 })
               .toArray();
           }
         } else {
           count = await GameEntries.countDocuments();
-          logs = await GameEntries.find().sort({ _id: -1 }).toArray();
+          logs = await GameEntries.find().sort({ title: 1 }).toArray();
         }
         return res.status(200).json({ logs, count });
       }
