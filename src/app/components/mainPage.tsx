@@ -8,6 +8,7 @@ import GameCard from './gameCard';
 import {
   GameEntryEntryWithId,
   GameEntryRequest,
+  sortProperties,
   validPlatforms,
 } from '../../../models/GameEntry/GameEntry';
 import NavBar from './navBar';
@@ -20,6 +21,8 @@ export default function MainPage() {
   const [searchBeaten, setSearchBeaten] = useState(false);
   const [searchWishList, setSearchWishList] = useState(false);
   const [searchPlatform, setSearchPlatform] = useState('all');
+  const [orderBy, setOrderBy] = useState(sortProperties[0]);
+  const [order, setOrder] = useState('asc');
   const translationArray = Object.values(validPlatforms);
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(0);
@@ -37,7 +40,9 @@ export default function MainPage() {
           searchBought ? 'bought=true&' : ''
         }${searchWishList ? 'bought=false&' : ''}${
           searchBeaten ? 'beaten=true&' : ''
-        }${searchPlatform !== 'all' ? `platform=${searchPlatform}&` : ''}`
+        }${
+          searchPlatform !== 'all' ? `platform=${searchPlatform}&` : ''
+        }${`orderBy=${orderBy}&`}${`order=${order}&`}`
       )
     )
       .then((res) => res.json())
@@ -50,7 +55,15 @@ export default function MainPage() {
 
   useEffect(() => {
     fetchData();
-  }, [searchValue, searchBought, searchWishList, searchBeaten, searchPlatform]);
+  }, [
+    searchValue,
+    searchBought,
+    searchWishList,
+    searchBeaten,
+    searchPlatform,
+    orderBy,
+    order,
+  ]);
 
   return (
     <>
@@ -146,6 +159,33 @@ export default function MainPage() {
                     {platform}
                   </option>
                 ))}
+              </select>
+            </label>
+            <label className="cursor-pointer label">
+              <span className="label-text">Order By</span>
+              <select
+                onChange={(e) => setOrderBy(e.target.value)}
+                className="select select-bordered"
+              >
+                {sortProperties.map((platform) => (
+                  <option key={platform} value={platform}>
+                    {platform}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="cursor-pointer label">
+              <span className="label-text">Order</span>
+              <select
+                onChange={(e) => setOrder(e.target.value)}
+                className="select select-bordered"
+              >
+                <option key={'asc'} value={'asc'}>
+                  ASC
+                </option>
+                <option key={'desc'} value={'desc'}>
+                  DESC
+                </option>
               </select>
             </label>
             <span className="label-text">Count: {count}</span>

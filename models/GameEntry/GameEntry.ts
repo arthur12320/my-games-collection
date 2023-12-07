@@ -93,3 +93,5 @@ export const GameEntryPlataforms = GameEntryProperties;
 export type GameEntryRequest = z.infer<typeof GameEntryRequest>;
 export type GameEntryEntry = z.infer<typeof GameEntryEntry>;
 export type GameEntryEntryWithId = z.infer<typeof GameEntryEntryWithId>;
+
+export const sortProperties = ['title', 'platform', 'boughtDate'];
