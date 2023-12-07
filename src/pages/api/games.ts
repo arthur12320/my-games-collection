@@ -84,7 +84,7 @@ export default async function handler(
             logs = await GameEntries.find({
               $and: [...andSearch, searchParams],
             })
-              .sort({ [orderBy as string]: order as 'asc' | 'desc' })
+              .sort({ added: order as 'asc' | 'desc' })
               .toArray();
           } else {
             count = await GameEntries.countDocuments(searchParams);

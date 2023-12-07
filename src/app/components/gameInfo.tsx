@@ -54,6 +54,10 @@ export default function GameInfo(props: GameInfoProps) {
               {` ${props.game?.beaten ? '✅' : '❌'}`}
             </p>
             <p className="py-2">
+              <b>Estimated Game Time:</b>
+              {` ${props.game?.estimatedBeatTime}h`}
+            </p>
+            <p className="py-2">
               <b>Image Link:</b>
               <a
                 href={props.game?.mainImage}

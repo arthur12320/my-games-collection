@@ -16,12 +16,23 @@ const gameEntryInputs: Record<
   GameEntryProperty,
   {
     label?: string;
-    type: 'text' | 'url' | 'date' | 'select' | 'password' | 'checkbox';
+    type:
+      | 'text'
+      | 'url'
+      | 'date'
+      | 'select'
+      | 'password'
+      | 'checkbox'
+      | 'number';
     option?: typeof validPlatforms;
   }
 > = {
   title: {
     type: 'text',
+  },
+  estimatedBeatTime: {
+    label: 'Estimated Runtime',
+    type: 'number',
   },
   mainImage: {
     label: 'image',
@@ -72,6 +83,7 @@ export default function UpdateGame(props: GameUpdateFormProps) {
       bought: props.game.bought,
       beaten: props.game.beaten,
       platform: props.game.platform,
+      estimatedBeatTime: props.game.estimatedBeatTime,
       boughtDate: props.game.boughtDate
         ? formatDate(new Date(props.game.boughtDate), 'yyyy-MM-dd')
         : nowString,
@@ -85,6 +97,7 @@ export default function UpdateGame(props: GameUpdateFormProps) {
   const onSubmit: SubmitHandler<GameEntryRequest> = async (data) => {
     try {
       setFormError('');
+
       const updatingGame = props.game as unknown as GameEntryRequest;
 
       const body = {
@@ -181,7 +194,9 @@ export default function UpdateGame(props: GameUpdateFormProps) {
                     className={`input input-bordered w-full ${
                       errors[property] ? 'input-error' : ''
                     }`}
-                    {...register(property)}
+                    {...register(property, {
+                      valueAsNumber: value.type === 'number',
+                    })}
                   />
                 )}
                 {errors[property] && <span>{errors[property]?.message}</span>}

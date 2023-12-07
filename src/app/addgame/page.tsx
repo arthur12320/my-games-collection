@@ -60,6 +60,9 @@ export default function AddGame() {
   const [title, setTitle] = useState('');
   const [platform, setPlatform] = useState('');
   const [image, setImage] = useState('');
+  const [estimatedBeatTime, setEstimatedBeatTime] = useState(
+    null as unknown as number
+  );
   const [bought, setBought] = useState(false);
   const [boughtDate, setBoughtDate] = useState(nowString);
   const [beaten, setBeaten] = useState(false);
@@ -216,6 +219,19 @@ export default function AddGame() {
         </div>
         <div className="form-control w-full">
           <label className="label">
+            <span className="label-text capitalize">Estimated Beat Time</span>
+          </label>
+          <input
+            type="number"
+            className={`input input-bordered w-full ${
+              formError ? 'input-error' : ''
+            }`}
+            value={estimatedBeatTime}
+            onChange={(e) => setEstimatedBeatTime(parseInt(e.target.value, 10))}
+          />
+        </div>
+        <div className="form-control w-full">
+          <label className="label">
             <span className="label-text capitalize">api key</span>
           </label>
           <input
@@ -234,6 +250,7 @@ export default function AddGame() {
             onSubmit({
               title,
               mainImage: image,
+              estimatedBeatTime,
               platform: platform as
                 | 'xbox360'
                 | 'xboxone'
