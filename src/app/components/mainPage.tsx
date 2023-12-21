@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import GameCard from './gameCard';
 import {
@@ -15,7 +15,7 @@ import NavBar from './navBar';
 import GameInfo from './gameInfo';
 
 export default function MainPage() {
-  const [games, setGames] = useState([]);
+  const [games, setGames] = useState([] as GameEntryEntryWithId[]);
   const [searchValue, setSearchValue] = useState('');
   const [searchBought, setSearchBought] = useState(false);
   const [searchBeaten, setSearchBeaten] = useState(false);
