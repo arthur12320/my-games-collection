@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import GameCard from './gameCard';
 import {
@@ -20,6 +20,10 @@ export default function MainPage() {
   const [searchBought, setSearchBought] = useState(false);
   const [searchBeaten, setSearchBeaten] = useState(false);
   const [searchWishList, setSearchWishList] = useState(false);
+  const [skip, setSkip] = useState(0);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(20);
+
   const [searchPlatform, setSearchPlatform] = useState('all');
   const [orderBy, setOrderBy] = useState(sortProperties[0]);
   const [order, setOrder] = useState('asc');
@@ -32,7 +36,8 @@ export default function MainPage() {
   const [showCard, setShowCard] = useState(false);
   const router = useRouter();
 
-  function fetchData() {
+  function scroll() {
+    console.log('scroll');
     setLoading(true);
     fetch(
       encodeURI(
@@ -42,7 +47,31 @@ export default function MainPage() {
           searchBeaten ? 'beaten=true&' : ''
         }${
           searchPlatform !== 'all' ? `platform=${searchPlatform}&` : ''
-        }${`orderBy=${orderBy}&`}${`order=${order}&`}`
+        }${`orderBy=${orderBy}&`}${`order=${order}&`}skip=${
+          page * limit
+        }&limit=${limit}`
+      )
+    )
+      .then((res) => res.json())
+      .then((json) => {
+        setLoading(false);
+        setGames([...games, ...json.logs]);
+        setCount(json.count);
+      });
+  }
+
+  function fetchData() {
+    setLoading(true);
+    setSkip(0);
+    fetch(
+      encodeURI(
+        `/api/games?${searchValue !== '' ? `title=${searchValue}&` : ''}${
+          searchBought ? 'bought=true&' : ''
+        }${searchWishList ? 'bought=false&' : ''}${
+          searchBeaten ? 'beaten=true&' : ''
+        }${
+          searchPlatform !== 'all' ? `platform=${searchPlatform}&` : ''
+        }${`orderBy=${orderBy}&`}${`order=${order}&`}skip=${skip}&limit=${limit}`
       )
     )
       .then((res) => res.json())
@@ -206,6 +235,17 @@ export default function MainPage() {
               ))
             )}
           </div>
+          {!loading && games.length <= count && (
+            <button
+              onClick={() => {
+                setPage((prevpage) => prevpage + 1);
+                scroll();
+              }}
+              className=" btn btn-primary btn-md md:btn-md lg:btn-lg"
+            >
+              Load More
+            </button>
+          )}
         </>
         <button
           onClick={() => {

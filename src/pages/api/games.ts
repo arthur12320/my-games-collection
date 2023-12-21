@@ -49,7 +49,13 @@ export default async function handler(
         const search = req.query.title;
         const { beaten } = req.query;
         const { bought } = req.query;
-        const { platform, orderBy, order } = req.query;
+        const {
+          platform,
+          orderBy,
+          order,
+          skip = '0',
+          limit = '10',
+        } = req.query;
 
         if (
           search ||
@@ -84,17 +90,23 @@ export default async function handler(
             logs = await GameEntries.find({
               $and: [...andSearch, searchParams],
             })
+              .skip(parseInt(skip as string, 10))
+              .limit(parseInt(limit as string, 10))
               .sort({ added: order as 'asc' | 'desc' })
               .toArray();
           } else {
             count = await GameEntries.countDocuments(searchParams);
             logs = await GameEntries.find(searchParams)
+              .skip(parseInt(skip as string, 10))
+              .limit(parseInt(limit as string, 10))
               .sort({ [orderBy as string]: order as 'asc' | 'desc' })
               .toArray();
           }
         } else {
           count = await GameEntries.countDocuments();
           logs = await GameEntries.find()
+            .skip(parseInt(skip as string, 10))
+            .limit(parseInt(limit as string, 10))
             .sort({ [orderBy as string]: order as 'asc' | 'desc' })
             .toArray();
         }
