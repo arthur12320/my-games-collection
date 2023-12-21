@@ -22,7 +22,7 @@ export default function MainPage() {
   const [searchWishList, setSearchWishList] = useState(false);
   const [skip, setSkip] = useState(0);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(20);
+  const [limit] = useState(20);
 
   const [searchPlatform, setSearchPlatform] = useState('all');
   const [orderBy, setOrderBy] = useState(sortProperties[0]);
