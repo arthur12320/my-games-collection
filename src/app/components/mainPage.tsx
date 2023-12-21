@@ -70,7 +70,7 @@ export default function MainPage() {
           searchBeaten ? 'beaten=true&' : ''
         }${
           searchPlatform !== 'all' ? `platform=${searchPlatform}&` : ''
-        }${`orderBy=${orderBy}&`}${`order=${order}&`}skip=${skip}&limit=${limit}`
+        }${`orderBy=${orderBy}&`}${`order=${order}&`}skip=0&limit=${limit}`
       )
     )
       .then((res) => res.json())
