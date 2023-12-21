@@ -38,7 +38,6 @@ export default function MainPage() {
 
   function scroll() {
     console.log('scroll');
-    setLoading(true);
     fetch(
       encodeURI(
         `/api/games?${searchValue !== '' ? `title=${searchValue}&` : ''}${
