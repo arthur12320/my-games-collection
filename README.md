@@ -25,8 +25,9 @@ a quick application to store/display my games collections
 - [ ] ~~change to mongoose~~
 - [ ] treat delete errors
 - [X] make bought date only required if bought
-- [ ] add played tag
+- [X] add played tag
 - [X] add select for platform
+- [ ] add a easy way to show what games are not complete
 
 
 ## Known Bugs
@@ -49,4 +50,6 @@ a quick application to store/display my games collections
 ### future ideas
 - [ ] add "light" mode
 - [ ] add indie games list
-- [ ] add scroll pagination/ lazy loading
+- [ ] add automation with different apis
+- [ ] add scanning price tag
+- [ ] ADD MULTIPLE USERS

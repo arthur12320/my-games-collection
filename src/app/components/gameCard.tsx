@@ -3,12 +3,12 @@ import { GameEntryEntryWithId } from '../../../models/GameEntry/GameEntry';
 export type GameCardProps = {
   game: GameEntryEntryWithId;
   onSelect: () => void;
+  orderBy: string;
 };
 
 export default function GameCard(props: GameCardProps) {
   return (
     <div
-      // eslint-disable-next-line no-underscore-dangle
       onClick={() => props.onSelect()}
       className="card bg-base-100 shadow-xl mx-auto hover:shadow-sm"
     >
@@ -33,6 +33,20 @@ export default function GameCard(props: GameCardProps) {
           <div className="badge badge-accent">beaten</div>
         ) : (
           <></>
+        )}
+        {props.orderBy === 'estimatedBeatTime' && (
+          <div className="flex flex-row">
+            <p>playtime: </p>
+            <div className="badge badge-accent">{`${props.game.estimatedBeatTime} h`}</div>
+          </div>
+        )}
+        {props.orderBy === 'boughtDate' && (
+          <div className="flex flex-row">
+            <p>boughtDate: </p>
+            <div className="badge badge-accent">{`${new Date(
+              props.game?.boughtDate as number
+            ).toLocaleDateString()} `}</div>
+          </div>
         )}
       </div>
     </div>

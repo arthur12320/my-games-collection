@@ -49,13 +49,7 @@ export default async function handler(
         const search = req.query.title;
         const { beaten } = req.query;
         const { bought } = req.query;
-        const {
-          platform,
-          orderBy,
-          order,
-          skip = '0',
-          limit = '10',
-        } = req.query;
+        const { platform, orderBy, order, skip = '0', limit = '0' } = req.query;
 
         if (
           search ||

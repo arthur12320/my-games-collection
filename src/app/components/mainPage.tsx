@@ -13,6 +13,7 @@ import {
 } from '../../../models/GameEntry/GameEntry';
 import NavBar from './navBar';
 import GameInfo from './gameInfo';
+import PageTurner from './pageTurner';
 
 export default function MainPage() {
   const [games, setGames] = useState([] as GameEntryEntryWithId[]);
@@ -20,12 +21,15 @@ export default function MainPage() {
   const [searchBought, setSearchBought] = useState(false);
   const [searchBeaten, setSearchBeaten] = useState(false);
   const [searchWishList, setSearchWishList] = useState(false);
-  const [skip, setSkip] = useState(0);
-  const [page, setPage] = useState(1);
-  const [limit] = useState(20);
+  const [page, setPage] = useState(0);
+  const [limit, setLimit] = useState(20);
 
   const [searchPlatform, setSearchPlatform] = useState('all');
-  const [orderBy, setOrderBy] = useState(sortProperties[0]);
+  const tuple = <T extends string[]>(...args: T) => args;
+  const input = tuple(...sortProperties);
+  const [orderBy, setOrderBy] = useState(
+    sortProperties[0] as (typeof input)[number]
+  );
   const [order, setOrder] = useState('asc');
   const translationArray = Object.values(validPlatforms);
   const [loading, setLoading] = useState(false);
@@ -36,32 +40,8 @@ export default function MainPage() {
   const [showCard, setShowCard] = useState(false);
   const router = useRouter();
 
-  function scroll() {
-    console.log('scroll');
-    fetch(
-      encodeURI(
-        `/api/games?${searchValue !== '' ? `title=${searchValue}&` : ''}${
-          searchBought ? 'bought=true&' : ''
-        }${searchWishList ? 'bought=false&' : ''}${
-          searchBeaten ? 'beaten=true&' : ''
-        }${
-          searchPlatform !== 'all' ? `platform=${searchPlatform}&` : ''
-        }${`orderBy=${orderBy}&`}${`order=${order}&`}skip=${
-          page * limit
-        }&limit=${limit}`
-      )
-    )
-      .then((res) => res.json())
-      .then((json) => {
-        setLoading(false);
-        setGames([...games, ...json.logs]);
-        setCount(json.count);
-      });
-  }
-
   function fetchData() {
     setLoading(true);
-    setSkip(0);
     fetch(
       encodeURI(
         `/api/games?${searchValue !== '' ? `title=${searchValue}&` : ''}${
@@ -70,7 +50,9 @@ export default function MainPage() {
           searchBeaten ? 'beaten=true&' : ''
         }${
           searchPlatform !== 'all' ? `platform=${searchPlatform}&` : ''
-        }${`orderBy=${orderBy}&`}${`order=${order}&`}skip=0&limit=${limit}`
+        }${`orderBy=${String(orderBy)}&`}${`order=${order}&`}skip=${
+          page * limit
+        }&${limit > 0 ? `limit=${limit}` : ''}`
       )
     )
       .then((res) => res.json())
@@ -91,6 +73,8 @@ export default function MainPage() {
     searchPlatform,
     orderBy,
     order,
+    page,
+    limit,
   ]);
 
   return (
@@ -147,6 +131,7 @@ export default function MainPage() {
                 checked={searchBought}
                 onChange={() => {
                   setSearchWishList(false);
+                  setPage(0);
                   setSearchBought(!searchBought);
                 }}
                 className="checkbox checkbox-success"
@@ -159,6 +144,7 @@ export default function MainPage() {
                 checked={searchWishList}
                 onChange={() => {
                   setSearchBought(false);
+                  setPage(0);
                   setSearchWishList(!searchWishList);
                 }}
                 className="checkbox checkbox-success"
@@ -170,6 +156,7 @@ export default function MainPage() {
                 type="checkbox"
                 checked={searchBeaten}
                 onChange={() => {
+                  setPage(0);
                   setSearchBeaten(!searchBeaten);
                 }}
                 className="checkbox checkbox-success"
@@ -192,7 +179,10 @@ export default function MainPage() {
             <label className="cursor-pointer label">
               <span className="label-text">Order By</span>
               <select
-                onChange={(e) => setOrderBy(e.target.value)}
+                onChange={(e) => {
+                  setPage(0);
+                  setOrderBy(e.target.value as string);
+                }}
                 className="select select-bordered"
               >
                 {sortProperties.map((platform) => (
@@ -205,7 +195,10 @@ export default function MainPage() {
             <label className="cursor-pointer label">
               <span className="label-text">Order</span>
               <select
-                onChange={(e) => setOrder(e.target.value)}
+                onChange={(e) => {
+                  setPage(0);
+                  setOrder(e.target.value);
+                }}
                 className="select select-bordered"
               >
                 <option key={'asc'} value={'asc'}>
@@ -218,6 +211,15 @@ export default function MainPage() {
             </label>
             <span className="label-text">Count: {count}</span>
           </div>
+          {!loading && (
+            <PageTurner
+              limit={limit}
+              page={page}
+              setPage={setPage}
+              setLimit={setLimit}
+              count={count}
+            />
+          )}
           <div className="grid grid-cols-1 gap-6 m-5 md:grid-cols-2 lg:grid-cols-4 items-start h-max">
             {loading ? (
               <progress className="progress w-56"></progress>
@@ -230,20 +232,19 @@ export default function MainPage() {
                   }}
                   key={game._id}
                   game={game}
+                  orderBy={orderBy}
                 />
               ))
             )}
           </div>
-          {!loading && games.length <= count && (
-            <button
-              onClick={() => {
-                setPage((prevpage) => prevpage + 1);
-                scroll();
-              }}
-              className=" btn btn-primary btn-md md:btn-md lg:btn-lg"
-            >
-              Load More
-            </button>
+          {!loading && (
+            <PageTurner
+              limit={limit}
+              page={page}
+              setPage={setPage}
+              setLimit={setLimit}
+              count={count}
+            />
           )}
         </>
         <button
