@@ -86,7 +86,7 @@ export default async function handler(
             })
               .skip(parseInt(skip as string, 10))
               .limit(parseInt(limit as string, 10))
-              .sort({ added: order as 'asc' | 'desc' })
+              .sort({ [orderBy as string]: order as 'asc' | 'desc' })
               .toArray();
           } else {
             count = await GameEntries.countDocuments(searchParams);
