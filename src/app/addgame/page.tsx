@@ -60,6 +60,7 @@ export default function AddGame() {
   const [title, setTitle] = useState('');
   const [platform, setPlatform] = useState('');
   const [image, setImage] = useState('');
+  const [autoFillResult, setAutoFillResult] = useState('');
   const [estimatedBeatTime, setEstimatedBeatTime] = useState(
     null as unknown as number
   );
@@ -227,8 +228,37 @@ export default function AddGame() {
               formError ? 'input-error' : ''
             }`}
             value={estimatedBeatTime}
-            onChange={(e) => setEstimatedBeatTime(parseInt(e.target.value, 10))}
+            onChange={(e) => {
+              setAutoFillResult('');
+              setEstimatedBeatTime(parseInt(e.target.value, 10));
+            }}
           />
+          <>
+            <button
+              className="btn btn-primary size-sm"
+              onClick={async (e) => {
+                e.preventDefault();
+                const response = await fetch(
+                  encodeURI(`/api/timeto?name=${encodeURI(title)}`)
+                )
+                  .then((res) => res.json())
+                  .then((json) => {
+                    return json;
+                  });
+                setEstimatedBeatTime(response.gameplayMain);
+                setAutoFillResult(
+                  `${response.name} - ${response.platforms[0]}`
+                );
+              }}
+            >
+              test autofill
+            </button>
+            {autoFillResult && (
+              <div className="tooltip" data-tip={autoFillResult}>
+                <div className="badge badge-accent">found</div>
+              </div>
+            )}
+          </>
         </div>
         <div className="form-control w-full">
           <label className="label">

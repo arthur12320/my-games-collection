@@ -70,11 +70,13 @@ type GameUpdateFormProps = {
 
 export default function UpdateGame(props: GameUpdateFormProps) {
   const [formError, setFormError] = useState('');
+  const [autoFillResult, setAutoFillResult] = useState('');
   const router = useRouter();
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<GameEntryRequest>({
     resolver: zodResolver(GameEntryRequest),
@@ -174,31 +176,66 @@ export default function UpdateGame(props: GameUpdateFormProps) {
                     {value.label || name}
                   </span>
                 </label>
-                {value.type === 'select' ? (
-                  <select
-                    className={`textarea textarea-bordered w-full ${
-                      errors[property] ? 'input-error' : ''
-                    }`}
-                    {...register(property)}
-                  >
-                    {value.option?.map((option, i) => (
-                      <option key={i} value={option as string}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  <input
-                    type={value.type}
-                    step="any"
-                    className={`input input-bordered w-full ${
-                      errors[property] ? 'input-error' : ''
-                    }`}
-                    {...register(property, {
-                      valueAsNumber: value.type === 'number',
-                    })}
-                  />
-                )}
+                <div className="flex flex-row">
+                  {value.type === 'select' ? (
+                    <select
+                      className={`textarea textarea-bordered w-full ${
+                        errors[property] ? 'input-error' : ''
+                      }`}
+                      {...register(property)}
+                    >
+                      {value.option?.map((option, i) => (
+                        <option key={i} value={option as string}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      type={value.type}
+                      step="any"
+                      className={`input input-bordered w-full ${
+                        errors[property] ? 'input-error' : ''
+                      }`}
+                      {...register(property, {
+                        valueAsNumber: value.type === 'number',
+                      })}
+                      onChange={() => {
+                        setAutoFillResult('');
+                      }}
+                    />
+                  )}
+                  {value.label === 'Estimated Runtime' && (
+                    <>
+                      <button
+                        className="btn btn-primary size-sm"
+                        onClick={async (e) => {
+                          e.preventDefault();
+                          const response = await fetch(
+                            encodeURI(
+                              `/api/timeto?name=${encodeURI(props.game.title)}`
+                            )
+                          )
+                            .then((res) => res.json())
+                            .then((json) => {
+                              return json;
+                            });
+                          setValue('estimatedBeatTime', response.gameplayMain);
+                          setAutoFillResult(
+                            `${response.name} - ${response.platforms[0]}`
+                          );
+                        }}
+                      >
+                        test autofill
+                      </button>
+                      {autoFillResult && (
+                        <div className="tooltip" data-tip={autoFillResult}>
+                          <div className="badge badge-accent">found</div>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
                 {errors[property] && <span>{errors[property]?.message}</span>}
               </div>
             );
