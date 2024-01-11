@@ -200,6 +200,10 @@ export default function UpdateGame(props: GameUpdateFormProps) {
                       {...register(property, {
                         valueAsNumber: value.type === 'number',
                       })}
+                      onKeyDown={(e) => {
+                        e.preventDefault();
+                        setAutoFillResult('');
+                      }}
                     />
                   )}
                   {value.label === 'Estimated Runtime' && (
