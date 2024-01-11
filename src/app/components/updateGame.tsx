@@ -200,7 +200,8 @@ export default function UpdateGame(props: GameUpdateFormProps) {
                       {...register(property, {
                         valueAsNumber: value.type === 'number',
                       })}
-                      onChange={() => {
+                      onChange={(e) => {
+                        e.preventDefault();
                         setAutoFillResult('');
                       }}
                     />
