@@ -228,10 +228,6 @@ export default function AddGame() {
               formError ? 'input-error' : ''
             }`}
             value={estimatedBeatTime}
-            onChange={(e) => {
-              setAutoFillResult('');
-              setEstimatedBeatTime(parseInt(e.target.value, 10));
-            }}
           />
           <>
             <button
